@@ -58,7 +58,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  String _getGreeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
   Widget _buildHeader(BuildContext context) {
+    final authService = AuthService();
+    final user = authService.currentUser;
+    final userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
+    final cappedName = userName[0].toUpperCase() + userName.substring(1).toLowerCase();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -66,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Good Morning!',
+              '${_getGreeting()}, $cappedName!',
               style: GoogleFonts.inter(
                 fontSize: 16,
                 color: AppColors.textSecondary,

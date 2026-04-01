@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'checkout_screen.dart';
 import '../providers/cart_provider.dart';
 import '../utils/app_colors.dart';
 
@@ -183,7 +184,9 @@ class CartScreen extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                // Checkout logic
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const CheckoutScreen()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
