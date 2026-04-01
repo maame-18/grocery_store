@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../services/auth_service.dart';
 import '../utils/app_colors.dart';
 import '../utils/session_manager.dart';
