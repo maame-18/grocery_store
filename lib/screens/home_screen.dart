@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../services/auth_service.dart';
 import '../utils/app_colors.dart';
 import '../utils/mock_data.dart';
 import '../utils/session_manager.dart';
@@ -86,12 +87,16 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(
               icon: const Icon(Icons.logout, color: AppColors.textSecondary),
               onPressed: () async {
+                final AuthService authService = AuthService();
+                await authService.signOut();
                 await SessionManager.clearSession();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const OnboardingScreen()),
-                  (route) => false,
-                );
+                if (context.mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+                    (route) => false,
+                  );
+                }
               },
             ),
             GestureDetector(

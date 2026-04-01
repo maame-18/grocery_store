@@ -5,18 +5,18 @@ import '../services/auth_service.dart';
 import '../utils/app_colors.dart';
 import '../utils/session_manager.dart';
 import 'home_screen.dart';
-import 'signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final AuthService _authService = AuthService();
   bool _obscureText = true;
   bool _isLoading = false;
@@ -25,10 +25,18 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _handleSignIn() async {
+  void _handleSignUp() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
+      return;
+    }
+
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill all fields')),
@@ -37,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     setState(() => _isLoading = true);
-    final user = await _authService.signInWithEmailAndPassword(
+    final user = await _authService.signUpWithEmailAndPassword(
       _emailController.text.trim(),
       _passwordController.text.trim(),
     );
@@ -46,15 +54,16 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       await SessionManager.setLoggedIn(true);
       if (mounted) {
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false,
         );
       }
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid user credentials')),
+          const SnackBar(content: Text('Sign up failed. Please try again.')),
         );
       }
     }
@@ -74,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
               _buildBackBtn(context),
               const SizedBox(height: 40),
               Text(
-                'Welcome Back',
+                'Create Account',
                 style: GoogleFonts.inter(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -83,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                'Sign in to explore delicious foods',
+                'Join us to explore delicious foods',
                 style: GoogleFonts.inter(
                   fontSize: 16,
                   color: AppColors.textSecondary,
@@ -92,39 +101,23 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 60),
               _buildTextField('Email', Icons.email_outlined, _emailController),
               const SizedBox(height: 24),
-              _buildPasswordField(),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: AppColors.primary),
-                  ),
-                ),
-              ),
+              _buildPasswordField('Password', _passwordController),
+              const SizedBox(height: 24),
+              _buildPasswordField('Confirm Password', _confirmPasswordController),
               const SizedBox(height: 40),
-              _buildSignInBtn(context),
-              const SizedBox(height: 40),
-              _buildSocialSignIn(),
+              _buildSignUpBtn(),
               const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Don\'t have an account?',
+                    'Already have an account?',
                     style: TextStyle(color: AppColors.textSecondary),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignupScreen()),
-                      );
-                    },
+                    onPressed: () => Navigator.pop(context),
                     child: const Text(
-                      'Sign Up',
+                      'Sign In',
                       style: TextStyle(
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
@@ -172,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildPasswordField() {
+  Widget _buildPasswordField(String hint, TextEditingController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
@@ -180,11 +173,11 @@ class _LoginScreenState extends State<LoginScreen> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
-        controller: _passwordController,
+        controller: controller,
         obscureText: _obscureText,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: 'Password',
+          hintText: hint,
           icon: const Icon(
             Icons.lock_outline,
             color: AppColors.textSecondary,
@@ -205,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSignInBtn(BuildContext context) {
+  Widget _buildSignUpBtn() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
@@ -213,64 +206,17 @@ class _LoginScreenState extends State<LoginScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         elevation: 0,
       ),
-      onPressed: _isLoading ? null : _handleSignIn,
+      onPressed: _isLoading ? null : _handleSignUp,
       child: _isLoading
           ? const CircularProgressIndicator(color: Colors.white)
           : const Text(
-              'Sign In',
+              'Sign Up',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-    );
-  }
-
-  Widget _buildSocialSignIn() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Expanded(child: Divider()),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'OR',
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const Expanded(child: Divider()),
-          ],
-        ),
-        const SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildSocialBtn(
-              'https://pngimg.com/uploads/google/google_PNG19635.png',
-            ),
-            const SizedBox(width: 40),
-            _buildSocialBtn(
-              'https://pngimg.com/uploads/apple_logo/apple_logo_PNG19673.png',
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialBtn(String logoUrl) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[200]!),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: CachedNetworkImage(imageUrl: logoUrl, height: 30, width: 30),
     );
   }
 }
