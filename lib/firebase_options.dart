@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyA-TwTtVkDttO8o4Vr1xibPXkAKUZF1bKM',
-    appId: '1:270620624991:web:aee17c4f42f6ed15e333ea',
+    appId: '1:270620624991:web:54211a7374b12286e333ea',
     messagingSenderId: '270620624991',
     projectId: 'login-c2782',
     authDomain: 'login-c2782.firebaseapp.com',
@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDqt0NkmzlulGqEwmQhBpc04ibW76hb-o0',
-    appId: '1:270620624991:android:6146251a980b7b40e333ea',
+    appId: '1:270620624991:android:13040fb2a10c79afe333ea',
     messagingSenderId: '270620624991',
     projectId: 'login-c2782',
     storageBucket: 'login-c2782.firebasestorage.app',
@@ -59,28 +59,29 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBE_P-ZweCD00ayGmUQvF97ZA4uNrwyaRI',
-    appId: '1:270620624991:ios:cb73d143246d974be333ea',
+    appId: '1:270620624991:ios:82955218a2bfdd26e333ea',
     messagingSenderId: '270620624991',
     projectId: 'login-c2782',
     storageBucket: 'login-c2782.firebasestorage.app',
-    iosBundleId: 'com.example.foodShop',
+    iosBundleId: 'com.example.groceryStore',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBE_P-ZweCD00ayGmUQvF97ZA4uNrwyaRI',
-    appId: '1:270620624991:ios:cb73d143246d974be333ea',
+    appId: '1:270620624991:ios:82955218a2bfdd26e333ea',
     messagingSenderId: '270620624991',
     projectId: 'login-c2782',
     storageBucket: 'login-c2782.firebasestorage.app',
-    iosBundleId: 'com.example.foodShop',
+    iosBundleId: 'com.example.groceryStore',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyA-TwTtVkDttO8o4Vr1xibPXkAKUZF1bKM',
-    appId: '1:270620624991:web:54211a7374b12286e333ea',
+    appId: '1:270620624991:web:a66f101a5ccaf1d8e333ea',
     messagingSenderId: '270620624991',
     projectId: 'login-c2782',
     authDomain: 'login-c2782.firebaseapp.com',
     storageBucket: 'login-c2782.firebasestorage.app',
   );
+
 }

@@ -10,33 +10,44 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          _buildHeroImage(context),
-          _buildContent(context),
-        ],
-      ),
+      body: Stack(children: [_buildHeroImage(context), _buildContent(context)]),
     );
   }
 
   Widget _buildHeroImage(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.6,
       width: double.infinity,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.black.withOpacity(0.4), Colors.transparent, Colors.white],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.network(
+              'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  Container(color: AppColors.secondary),
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(color: Colors.grey[200]);
+              },
+            ),
           ),
-        ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.4),
+                    Colors.transparent,
+                    Colors.white,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -45,7 +56,10 @@ class OnboardingScreen extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.45,
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height * 0.45,
+          maxHeight: MediaQuery.of(context).size.height * 0.75,
+        ),
         width: double.infinity,
         padding: const EdgeInsets.all(32),
         decoration: const BoxDecoration(
@@ -53,6 +67,9 @@ class OnboardingScreen extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const SizedBox(height: 20),
             Text(
@@ -75,12 +92,14 @@ class OnboardingScreen extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-            const Spacer(),
+            const SizedBox(height: 24),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 minimumSize: const Size(double.infinity, 60),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 elevation: 0,
               ),
               onPressed: () {
@@ -91,7 +110,11 @@ class OnboardingScreen extends StatelessWidget {
               },
               child: const Text(
                 'Get Started',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
             const SizedBox(height: 20),

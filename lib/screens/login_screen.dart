@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../utils/app_colors.dart';
+import '../utils/session_manager.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -52,7 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
-                  child: const Text('Forgot Password?', style: TextStyle(color: AppColors.primary)),
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(color: AppColors.primary),
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
@@ -63,10 +67,19 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Don\'t have an account?', style: TextStyle(color: AppColors.textSecondary)),
+                  Text(
+                    'Don\'t have an account?',
+                    style: TextStyle(color: AppColors.textSecondary),
+                  ),
                   TextButton(
                     onPressed: () {},
-                    child: const Text('Sign Up', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -120,11 +133,17 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: 'Password',
-          icon: const Icon(Icons.lock_outline, color: AppColors.textSecondary, size: 20),
+          icon: const Icon(
+            Icons.lock_outline,
+            color: AppColors.textSecondary,
+            size: 20,
+          ),
           suffixIcon: GestureDetector(
             onTap: () => setState(() => _obscureText = !_obscureText),
             child: Icon(
-              _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+              _obscureText
+                  ? Icons.visibility_off_outlined
+                  : Icons.visibility_outlined,
               color: AppColors.textSecondary,
               size: 20,
             ),
@@ -142,13 +161,21 @@ class _LoginScreenState extends State<LoginScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         elevation: 0,
       ),
-      onPressed: () {
+      onPressed: () async {
+        await SessionManager.setLoggedIn(true);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       },
-      child: const Text('Sign In', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+      child: const Text(
+        'Sign In',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
@@ -160,7 +187,13 @@ class _LoginScreenState extends State<LoginScreen> {
             const Expanded(child: Divider()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text('OR', style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+              child: Text(
+                'OR',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             const Expanded(child: Divider()),
           ],
@@ -169,9 +202,13 @@ class _LoginScreenState extends State<LoginScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildSocialBtn('https://pngimg.com/uploads/google/google_PNG19635.png'),
+            _buildSocialBtn(
+              'https://pngimg.com/uploads/google/google_PNG19635.png',
+            ),
             const SizedBox(width: 40),
-            _buildSocialBtn('https://pngimg.com/uploads/apple_logo/apple_logo_PNG19673.png'),
+            _buildSocialBtn(
+              'https://pngimg.com/uploads/apple_logo/apple_logo_PNG19673.png',
+            ),
           ],
         ),
       ],

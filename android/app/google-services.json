@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "270620624991",
+    "project_id": "login-c2782",
+    "storage_bucket": "login-c2782.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270620624991:android:6146251a980b7b40e333ea",
+        "android_client_info": {
+          "package_name": "com.example.food_shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqt0NkmzlulGqEwmQhBpc04ibW76hb-o0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270620624991:android:13040fb2a10c79afe333ea",
+        "android_client_info": {
+          "package_name": "com.example.grocery_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqt0NkmzlulGqEwmQhBpc04ibW76hb-o0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270620624991:android:97891daefb07a514e333ea",
+        "android_client_info": {
+          "package_name": "com.example.login"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqt0NkmzlulGqEwmQhBpc04ibW76hb-o0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

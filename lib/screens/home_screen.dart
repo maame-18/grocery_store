@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../utils/app_colors.dart';
 import '../utils/mock_data.dart';
+import '../utils/session_manager.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/food_card.dart';
 import 'details_screen.dart';
 import 'cart_screen.dart';
+import 'onboarding_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -79,16 +81,29 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CartScreen()),
-            );
-          },
-          child: Stack(
-            children: [
-              Container(
+        Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.logout, color: AppColors.textSecondary),
+              onPressed: () async {
+                await SessionManager.clearSession();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+                  (route) => false,
+                );
+              },
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CartScreen()),
+                );
+              },
+              child: Stack(
+                children: [
+                  Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -133,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ],
-    );
+    )
+    ]);
   }
 
   Widget _buildSearchBar() {
