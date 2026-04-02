@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/tab_provider.dart';
 import '../utils/app_colors.dart';
 import '../widgets/food_card.dart';
 import 'details_screen.dart';
@@ -12,8 +13,11 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textMain = isDark ? AppColors.textMainDark : AppColors.textMain;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -21,7 +25,7 @@ class FavoritesScreen extends StatelessWidget {
         title: Text(
           'My Wishlist',
           style: GoogleFonts.inter(
-            color: AppColors.textMain,
+            color: textMain,
             fontWeight: FontWeight.w800,
             fontSize: 20,
           ),
@@ -30,14 +34,14 @@ class FavoritesScreen extends StatelessWidget {
       body: Consumer<FavoritesProvider>(
         builder: (context, favorites, child) {
           if (favorites.items.isEmpty) {
-            return _buildEmptyState(context);
+            return _buildEmptyState(context, textMain);
           }
           return GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             physics: const BouncingScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.6, // Matching the See All screen's increased height
+              childAspectRatio: 0.6,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
             ),
@@ -77,7 +81,7 @@ class FavoritesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context) {
+  Widget _buildEmptyState(BuildContext context, Color textMainColor) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +89,7 @@ class FavoritesScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.05),
+              color: AppColors.primary.withOpacity(0.08),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -100,7 +104,7 @@ class FavoritesScreen extends StatelessWidget {
             style: GoogleFonts.inter(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: AppColors.textMain,
+              color: textMainColor,
             ),
           ),
           const SizedBox(height: 10),
@@ -116,22 +120,25 @@ class FavoritesScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 35),
           ElevatedButton(
             onPressed: () {
-              // Usually we'd switch to the home tab here, 
-              // but since Favorites is a tab itself, user can just tap 'Home' 
+              context.read<TabProvider>().setTab(0); // Switch to Home tab
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 18),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              elevation: 8,
+              shadowColor: AppColors.primary.withOpacity(0.4),
             ),
             child: Text(
               'Discover Meals',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w700),
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
+              ),
             ),
           ),
         ],
