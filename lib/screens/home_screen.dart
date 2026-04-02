@@ -8,9 +8,11 @@ import '../utils/app_colors.dart';
 import '../utils/mock_data.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/food_card.dart';
+import '../widgets/app_image.dart';
 import 'details_screen.dart';
 import 'see_all_screen.dart';
 import 'categories_screen.dart';
+import 'store_details_screen.dart';
 import '../widgets/shuffle_banner.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -59,6 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 30),
               _buildFeaturedSection(filteredItems, textMain),
+              const SizedBox(height: 30),
+              _buildStoreSection(textMain),
               const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -113,31 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        // Consumer<ThemeProvider>(
-        //   builder: (context, themeProvider, child) {
-        //     return Container(
-        //       decoration: BoxDecoration(
-        //         color: Theme.of(context).colorScheme.surface,
-        //         borderRadius: BorderRadius.circular(15),
-        //         boxShadow: [
-        //           BoxShadow(
-        //             color: Colors.black.withOpacity(0.05),
-        //             blurRadius: 10,
-        //             offset: const Offset(0, 5),
-        //           ),
-        //         ],
-        //       ),
-        //       child: IconButton(
-        //         icon: Icon(
-        //           themeProvider.isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-        //           color: AppColors.primary,
-        //           size: 22,
-        //         ),
-        //         onPressed: () => themeProvider.toggleTheme(),
-        //       ),
-        //     );
-        //   },
-        // ),
       ],
     );
   }
@@ -329,6 +308,107 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildStoreSection(Color textMainColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: _buildSectionHeader('Popular Stores', () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SeeAllScreen(title: 'Popular Stores', items: mockStores),
+              ),
+            );
+          }, textMainColor),
+        ),
+        const SizedBox(height: 20),
+        SliverToBoxAdapter(child: SizedBox(
+          height: 180,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            physics: const BouncingScrollPhysics(),
+            itemCount: mockStores.length,
+            itemBuilder: (context, index) {
+              final store = mockStores[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => StoreDetailsScreen(store: store)),
+                  );
+                },
+                child: Container(
+                  width: 200,
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(22),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: AppImage(
+                          imageUrl: store.assetImage,
+                          width: double.infinity,
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              store.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: textMainColor,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                const Icon(Icons.star, color: Colors.amber, size: 14),
+                                const SizedBox(width: 4),
+                                Text(
+                                  store.rating,
+                                  style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '• ${store.deliveryTime}',
+                                  style: GoogleFonts.inter(fontSize: 12, color: AppColors.textSecondary),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        ).child ?? const SizedBox(),
+      ],
+    );
+  }
+
   Widget _buildPopularSection(List<FoodItem> items, Color textMainColor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -374,14 +454,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Row(
                     children: [
-                      ClipRRect(
+                      AppImage(
+                        imageUrl: food.imageUrl,
+                        width: 80,
+                        height: 80,
                         borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          food.imageUrl,
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
-                        ),
                       ),
                       const SizedBox(width: 15),
                       Expanded(

@@ -1,4 +1,5 @@
 import '../models/food_item.dart';
+import '../models/store.dart';
 
 final List<FoodItem> mockFoodItems = [
   FoodItem(
@@ -7,7 +8,7 @@ final List<FoodItem> mockFoodItems = [
     description: 'Double beef patty, cheese, lettuce, tomatoes, and secret sauce.',
     price: 12.99,
     imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800',
-    category: 'Burgers',
+    category: 'Main Dishes',
     rating: 4.8,
     deliveryTime: '20-30 min',
   ),
@@ -17,9 +18,19 @@ final List<FoodItem> mockFoodItems = [
     description: 'Mozzarella, tomato sauce, and pepperoni slices.',
     price: 15.50,
     imageUrl: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&q=80&w=800',
-    category: 'Pizza',
+    category: 'Main Dishes',
     rating: 4.6,
     deliveryTime: '30-40 min',
+  ),
+  FoodItem(
+    id: 'b1',
+    name: 'Family Feast Combo',
+    description: '2 Large Pizzas + 4 Drinks + Garlic Bread. Best value!',
+    price: 35.99,
+    imageUrl: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    category: 'Combo Deals',
+    rating: 4.9,
+    deliveryTime: '35-45 min',
   ),
   FoodItem(
     id: '3',
@@ -27,7 +38,7 @@ final List<FoodItem> mockFoodItems = [
     description: 'Mixed greens, cherry tomatoes, cucumbers, and balsamic vinaigrette.',
     price: 9.99,
     imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=800',
-    category: 'Salads',
+    category: 'Starters',
     rating: 4.5,
     deliveryTime: '15-25 min',
   ),
@@ -37,8 +48,57 @@ final List<FoodItem> mockFoodItems = [
     description: 'Spicy buffalo chicken wings served with ranch dressing.',
     price: 11.00,
     imageUrl: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&q=80&w=800',
-    category: 'Snacks',
+    category: 'Starters',
     rating: 4.7,
     deliveryTime: '20-30 min',
+  ),
+  FoodItem(
+    id: 'd1',
+    name: 'Cold Brew Coffee',
+    description: 'Smooth and refreshing artisanal cold brew.',
+    price: 4.50,
+    imageUrl: 'https://images.unsplash.com/photo-1559496417-e7f25cb247f3?auto=format&fit=crop&q=80&w=400',
+    category: 'Drinks',
+    rating: 4.8,
+    deliveryTime: '5-10 min',
+  ),
+];
+
+final List<Store> mockStores = [
+  const Store(
+    id: 's1',
+    name: 'Burger King',
+    category: 'Fast Food',
+    assetImage: 'assets/images/store/candy.jpg',
+    rating: '4.8',
+    reviewCount: 450,
+    deliveryTime: '15-25 min',
+    distance: '1.2 km',
+    location: 'Downtown Mall, North Wing',
+    description: 'Home of the WHOPPER! We take pride in serving high-quality, great-tasting, and affordable food.',
+  ),
+  const Store(
+    id: 's2',
+    name: 'Pizza Hut',
+    category: 'Pizza',
+    assetImage: 'assets/images/store/kfc.jpg',
+    rating: '4.5',
+    reviewCount: 320,
+    deliveryTime: '25-35 min',
+    distance: '2.5 km',
+    location: '7th Avenue Plaza',
+    description: 'Nothing beats a Pizza Hut pizza. Fresh dough, the best toppings, and melted cheese.',
+  ),
+  const Store(
+    id: 's3',
+    name: 'Green & Lean',
+    category: 'Healthy Meals',
+    assetImage: 'assets/images/store/mac.jpg',
+    rating: '4.9',
+    reviewCount: 280,
+    deliveryTime: '10-20 min',
+    distance: '0.8 km',
+    location: 'Eco Square, Suite 4',
+    description: 'Fresh, organic, and delicious. We believe healthy eating should never be a compromise.',
   ),
 ];
