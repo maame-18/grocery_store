@@ -20,10 +20,6 @@ class CartScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.textMain),
-          onPressed: () => Navigator.pop(context),
-        ),
       ),
       body: cartItems.isEmpty
           ? _buildEmptyCart(context)

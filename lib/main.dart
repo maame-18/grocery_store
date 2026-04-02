@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 import 'providers/cart_provider.dart';
-import 'screens/home_screen.dart';
+import 'providers/favorites_provider.dart';
+import 'screens/main_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'utils/app_colors.dart';
 import 'services/auth_service.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
         Provider<AuthService>(create: (_) => AuthService()),
       ],
       child: MaterialApp(
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
               );
             }
             if (snapshot.hasData) {
-              return const HomeScreen();
+              return const MainScreen();
             }
             return const OnboardingScreen();
           },
