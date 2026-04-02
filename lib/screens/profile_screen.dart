@@ -14,7 +14,8 @@ class ProfileScreen extends StatelessWidget {
     final user = authService.currentUser;
     final userEmail = user?.email ?? 'user@example.com';
     final userName = userEmail.split('@')[0];
-    final displayUserName = userName[0].toUpperCase() + userName.substring(1).toLowerCase();
+    final safeName = userName.isEmpty ? 'User' : userName;
+    final displayUserName = safeName[0].toUpperCase() + safeName.substring(1).toLowerCase();
 
     return Scaffold(
       backgroundColor: AppColors.background,

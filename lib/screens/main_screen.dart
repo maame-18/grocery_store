@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/tab_provider.dart';
 import '../utils/app_colors.dart';
 import 'home_screen.dart';
 import 'cart_screen.dart';
@@ -16,8 +17,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-  
   final List<Widget> _screens = [
     const HomeScreen(),
     const CartScreen(),
@@ -27,20 +26,22 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tabProvider = Provider.of<TabProvider>(context);
+    
     return Scaffold(
       body: PageTransitionSwitcher(
-        index: _selectedIndex,
-        child: _screens[_selectedIndex],
+        index: tabProvider.currentIndex,
+        child: _screens[tabProvider.currentIndex],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: _buildBottomNavigationBar(tabProvider),
     );
   }
 
-  Widget _buildBottomNavigationBar() {
+  Widget _buildBottomNavigationBar(TabProvider tabProvider) {
     return Container(
       padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20, top: 10),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
@@ -52,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
@@ -65,22 +66,22 @@ class _MainScreenState extends State<MainScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(0, Icons.home_rounded, 'Home'),
-            _buildCartNavItem(1),
-            _buildNavItem(2, Icons.favorite_rounded, 'Wishlist'),
-            _buildNavItem(3, Icons.person_rounded, 'Profile'),
+            _buildNavItem(0, Icons.home_rounded, 'Home', tabProvider),
+            _buildCartNavItem(1, tabProvider),
+            _buildNavItem(2, Icons.favorite_rounded, 'Wishlist', tabProvider),
+            _buildNavItem(3, Icons.person_rounded, 'Profile', tabProvider),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCartNavItem(int index) {
-    final isSelected = _selectedIndex == index;
+  Widget _buildCartNavItem(int index, TabProvider tabProvider) {
+    final isSelected = tabProvider.currentIndex == index;
     return Consumer<CartProvider>(
       builder: (context, cart, child) {
         return GestureDetector(
-          onTap: () => setState(() => _selectedIndex = index),
+          onTap: () => tabProvider.setTab(index),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
@@ -144,10 +145,10 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
-    final isSelected = _selectedIndex == index;
+  Widget _buildNavItem(int index, IconData icon, String label, TabProvider tabProvider) {
+    final isSelected = tabProvider.currentIndex == index;
     return GestureDetector(
-      onTap: () => setState(() => _selectedIndex = index),
+      onTap: () => tabProvider.setTab(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,

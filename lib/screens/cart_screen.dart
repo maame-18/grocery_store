@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'checkout_screen.dart';
 import '../providers/cart_provider.dart';
+import '../providers/tab_provider.dart';
 import '../utils/app_colors.dart';
 
 class CartScreen extends StatelessWidget {
@@ -60,7 +61,7 @@ class CartScreen extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           ElevatedButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.read<TabProvider>().setTab(0),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),

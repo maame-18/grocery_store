@@ -17,17 +17,21 @@ class FoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textMain = isDark ? AppColors.textMainDark : AppColors.textMain;
+    final textSecondary = isDark ? AppColors.textSecondaryDark : AppColors.textSecondary;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 170,
         margin: const EdgeInsets.only(right: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withOpacity(isDark ? 0.2 : 0.06),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -46,11 +50,11 @@ class FoodCard extends StatelessWidget {
                     width: double.infinity,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(
-                      color: Colors.grey[200],
+                      color: isDark ? Colors.grey[800] : Colors.grey[200],
                       child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
                     ),
                     errorWidget: (context, url, error) => Container(
-                      color: Colors.grey[200],
+                      color: isDark ? Colors.grey[800] : Colors.grey[200],
                       child: const Icon(Icons.error),
                     ),
                   ),
@@ -61,7 +65,7 @@ class FoodCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
+                      color: (isDark ? Colors.black : Colors.white).withOpacity(0.9),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -71,10 +75,10 @@ class FoodCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           food.rating.toString(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textMain,
+                            color: textMain,
                           ),
                         ),
                       ],
@@ -92,10 +96,10 @@ class FoodCard extends StatelessWidget {
                     food.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textMain,
+                      color: textMain,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -103,7 +107,7 @@ class FoodCard extends StatelessWidget {
                     food.category,
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textSecondary.withOpacity(0.7),
+                      color: textSecondary.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 10),

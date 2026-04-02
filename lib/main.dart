@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 import 'providers/cart_provider.dart';
 import 'providers/favorites_provider.dart';
+import 'providers/tab_provider.dart';
+import 'providers/theme_provider.dart';
 import 'screens/main_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'utils/app_colors.dart';
@@ -26,39 +28,57 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (_) => TabProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         Provider<AuthService>(create: (_) => AuthService()),
       ],
-      child: MaterialApp(
-        title: 'Food Shop',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primary,
-            primary: AppColors.primary,
-            secondary: AppColors.secondary,
-            surface: AppColors.surface,
-            background: AppColors.background,
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        
+        return MaterialApp(
+          title: 'Food Shop',
+          debugShowCheckedModeBanner: false,
+          themeMode: themeProvider.themeMode,
+          theme: ThemeData(
+            useMaterial3: true,
+            scaffoldBackgroundColor: AppColors.background,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primary,
+              primary: AppColors.primary,
+              surface: AppColors.surface,
+              brightness: Brightness.light,
+            ),
+            textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
           ),
-          useMaterial3: true,
-          scaffoldBackgroundColor: AppColors.background,
-          primaryColor: AppColors.primary,
-        ),
-        home: StreamBuilder<User?>(
-          stream: AuthService().authStateChanges,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              );
-            }
-            if (snapshot.hasData) {
-              return const MainScreen();
-            }
-            return const OnboardingScreen();
-          },
-        ),
-      ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            scaffoldBackgroundColor: AppColors.backgroundDark,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primary,
+              primary: AppColors.primary,
+              surface: AppColors.surfaceDark,
+              brightness: Brightness.dark,
+            ),
+            textTheme: GoogleFonts.interTextTheme(
+              ThemeData(brightness: Brightness.dark).textTheme,
+            ),
+          ),
+          home: StreamBuilder<User?>(
+            stream: AuthService().authStateChanges,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              }
+              if (snapshot.hasData) {
+                return const MainScreen();
+              }
+              return const OnboardingScreen();
+            },
+          ),
+        );
+      },
     );
   }
 }
